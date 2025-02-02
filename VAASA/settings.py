@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'GTMoviesStore.apps.GtmoviesstoreConfig',
-    'home'
+    'home',
+    'movies',
 ]
 
 MIDDLEWARE = [
