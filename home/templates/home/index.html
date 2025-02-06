@@ -1,20 +1,170 @@
 {% extends 'base.html' %}
 {% block content %}
-<header class="masthead bg-index text-white text-center
-           py-4">
-  <div class="container d-flex align-items-center flex-
-  column pt-2">
+{% load static %}
+
+<!-- Import a modern font -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+
+<style>
+  /* Global Reset & Font */
+  body, h2, h4, p {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* Container Constraints */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  /* Hero Section (Masthead) */
+  .masthead {
+    position: relative;
+    background: url('{% static "img/hero-banner.jpg" %}') center/cover no-repeat;
+    text-align: center;
+    padding: 80px 20px;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  /* Overlay for better text contrast */
+  .masthead::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 1;
+  }
+  
+  /* Ensure content stays above the overlay */
+  .masthead > .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Hero Title with Darker Gradient */
+  .masthead h2 {
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    /* Darker gradient for the title */
+    background: linear-gradient(90deg, #a92b00, #b8641b);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Text shadow removed */
+    animation: fadeInDown 1s ease-out;
+  }
+
+  /* Hero Description */
+  .masthead p {
+    font-size: 1.25rem;
+    line-height: 1.6;
+  }
+
+  /* Welcome Section */
+  .welcome-section {
+    padding: 60px 20px;
+    background: #f7f7f7;
+    text-align: center;
+  }
+
+  .welcome-section h4 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .welcome-section p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #555;
+    margin: 10px auto;
+    max-width: 900px;
+  }
+
+  /* Button Style (if needed later) */
+  .btn-custom {
+    display: inline-block;
+    background: linear-gradient(90deg, #a92b00, #b8641b);
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1rem;
+    border-radius: 25px;
+    transition: background 0.3s ease;
+    text-decoration: none;
+    margin-top: 20px;
+  }
+  
+  .btn-custom:hover {
+    background: linear-gradient(90deg, #b8641b, #a92b00);
+  }
+
+  /* Animation Keyframes */
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .masthead {
+      padding: 60px 15px;
+    }
+    .masthead h2 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+    }
+    .masthead p {
+      font-size: 1rem;
+    }
+    .welcome-section h4 {
+      font-size: 2rem;
+    }
+    .welcome-section p {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<!-- Hero Section -->
+<header class="masthead">
+  <div class="container">
     <h2>Movies Store</h2>
-    <p>Your Ticket to Unlimited Entertainment!</p>
+    <p>
+      Discover a world of cinema at your fingertips! Browse through an extensive collection of movies—from timeless classics to the latest blockbusters. Add movies to your cart and experience seamless streaming or purchase them to watch anytime.
+    </p>
   </div>
 </header>
-<div class="p-3">
+
+<!-- Welcome Section -->
+<section class="welcome-section">
   <div class="container">
-    <div class="row mt-3">
-      <div class="col mx-auto text-center mb-3">
-        <h4>Welcome to the best movie store!!</h4>
-      </div>
-    </div>
+    <h4>Welcome to the Ultimate Movie Experience!</h4>
+    <p>
+      Our movie store allows you to explore an incredible selection of films while adding them to your personalized cart for easy checkout. Whether you're a fan of action, drama, comedy, or indie films, we have something for everyone.
+    </p>
+    <p>
+      Want to share your thoughts on a film? Leave a review for any movie you watch! Engage with fellow movie lovers, rate films, and help others decide what to watch next. With a seamless, user-friendly experience, you can purchase, review, and enjoy movies—all in one place!
+    </p>
+    <!-- Uncomment the button below if you need a call-to-action -->
+    <!-- <a href="#" class="btn-custom">Get Started</a> -->
   </div>
-</div>
+</section>
+
 {% endblock content %}
