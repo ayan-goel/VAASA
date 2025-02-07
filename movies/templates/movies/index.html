@@ -57,6 +57,9 @@
     overflow: hidden;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px; /* Increased minimum height for the movie box */
   }
   
   .movie-card:hover {
@@ -67,14 +70,20 @@
   /* Movie image styling */
   .img-card-200 {
     width: 100%;
-    height: auto;
+    height: 500px; /* Increased image container height so more of the banner is visible */
+    object-fit: cover;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
   }
   
+  /* Card body styling */
   .card-body {
     padding: 15px;
     text-align: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>
 
@@ -101,11 +110,11 @@
     </div>
     <div class="row">
       {% for movie in template_data.movies %}
-      <div class="col-md-4 col-lg-3 mb-4">
-        <div class="card movie-card">
+      <div class="col-md-4 col-lg-3 mb-4 d-flex">
+        <div class="card movie-card h-100 w-100">
           <img src="{{ movie.image.url }}" class="card-img-top img-card-200" alt="{{ movie.name }}">
           <div class="card-body">
-            <a href="{% url 'movies.show' id=movie.id %}" class="btn btn-search">
+            <a href="{% url 'movies.show' id=movie.id %}" class="btn btn-search w-100">
               {{ movie.name }}
             </a>
           </div>
