@@ -1,41 +1,111 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
+<!-- Embedded CSS for Aesthetic Enhancements -->
+<style>
+  /* Container styling */
+  .movies-container {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  /* Heading styling */
+  .movies-container h2 {
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Search input styling */
+  .input-group-text {
+    background-color: #343a40;
+    color: #fff;
+    border: none;
+    border-radius: 5px 0 0 5px;
+  }
+  
+  .form-control {
+    border: 1px solid #ccc;
+    border-radius: 0 5px 5px 0;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-control:focus {
+    border-color: #343a40;
+    box-shadow: none;
+  }
+  
+  /* Search button styling */
+  .btn-search {
+    background-color: #343a40;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-search:hover {
+    background-color: #23272b;
+  }
+  
+  /* Movie card styling */
+  .movie-card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .movie-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  /* Movie image styling */
+  .img-card-200 {
+    width: 100%;
+    height: auto;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  .card-body {
+    padding: 15px;
+    text-align: center;
+  }
+</style>
+
 <div class="p-3">
-  <div class="container">
-    <div class="row mt-3">
-      <div class="col mx-auto mb-3">
+  <div class="container movies-container">
+    <div class="row">
+      <div class="col text-center mb-4">
         <h2>List of Movies</h2>
         <hr />
-        <p class="card-text">
-          <form method="GET">
-            <div class="row">
-              <div class="col-auto">
-                <div class="input-group col-auto">
-                  <div class="input-group-text">
-                    Search</div>
-                  <input type="text" class="form-control"
-                    name="search">
-                </div>
-              </div>
-              <div class="col-auto">
-                <button class="btn bg-dark text-white"
-                  type="submit">Search</button>
+        <form method="GET" class="mb-4">
+          <div class="row justify-content-center align-items-center">
+            <div class="col-auto">
+              <div class="input-group">
+                <span class="input-group-text">Search</span>
+                <input type="text" class="form-control" name="search" placeholder="Enter movie name">
               </div>
             </div>
-          </form>
-        </p>
+            <div class="col-auto">
+              <button class="btn btn-search" type="submit">Search</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
     <div class="row">
       {% for movie in template_data.movies %}
-      <div class="col-md-4 col-lg-3 mb-2">
-        <div class="p-2 card align-items-center pt-4">
-          <img src="{{ movie.image.url }}"
-            class="card-img-top img-card-200">
-          <div class="card-body text-center">
-            <a href="{% url 'movies.show' id=movie.id %}"
-              class="btn bg-dark text-white">
+      <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card movie-card">
+          <img src="{{ movie.image.url }}" class="card-img-top img-card-200" alt="{{ movie.name }}">
+          <div class="card-body">
+            <a href="{% url 'movies.show' id=movie.id %}" class="btn btn-search">
               {{ movie.name }}
             </a>
           </div>
