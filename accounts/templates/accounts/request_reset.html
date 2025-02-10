@@ -1,0 +1,8 @@
+<form method="POST">
+    {% csrf_token %}
+    {{ template_data.form.as_p }}
+    <button type="submit">Request Password Reset</button>
+    {% if template_data.error %}
+        <p>{{ template_data.error }}</p>
+    {% endif %}
+</form>

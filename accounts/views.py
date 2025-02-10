@@ -1,9 +1,47 @@
 from django.shortcuts import render
-from django.shortcuts import redirect
-from .forms import CustomUserCreationForm, CustomErrorList
+from django.shortcuts import redirect, get_object_or_404
+from .forms import CustomUserCreationForm, CustomErrorList, PasswordResetRequestForm, CustomSetPasswordForm
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+
+
+
+def request_reset(request):
+    template_data = {}
+    template_data['title'] = 'Forgot Password'
+    if request.method == 'GET':
+        form = PasswordResetRequestForm()
+        template_data['form'] = form
+        return render(request, 'accounts/request_reset.html', {'template_data': template_data})
+    elif request.method == 'POST':
+        form = PasswordResetRequestForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            user = User.objects.filter(username=username).first()
+            if user:
+                return redirect('accounts.reset_password', username=username)
+            else:
+                template_data['error'] = 'Username not found.'
+        template_data['form'] = form
+        return render(request, 'accounts/request_reset.html', {'template_data': template_data})
+
+def reset_password(request, username):
+    template_data = {}
+    template_data['title'] = 'Reset Password'
+    user = get_object_or_404(User, username=username)
+    if request.method == 'GET':
+        form = CustomSetPasswordForm(user)
+        template_data['form'] = form
+        return render(request, 'accounts/reset_password.html', {'template_data': template_data})
+    elif request.method == 'POST':
+        form = CustomSetPasswordForm(user, request.POST)
+        if form.is_valid():
+            user.set_password(form.cleaned_data['new_password1'])
+            user.save()
+            return redirect('accounts.login')
+        template_data['form'] = form
+        return render(request, 'accounts/reset_password.html', {'template_data': template_data})
 
 @login_required
 def orders(request):
@@ -36,6 +74,8 @@ def login(request):
         else:
             auth_login(request, user)
             return redirect('home.index')
+        
+
 def signup(request):
     template_data = {}
     template_data['title'] = 'Sign Up'
@@ -52,4 +92,6 @@ def signup(request):
             template_data['form'] = form
             return render(request, 'accounts/signup.html',
                 {'template_data': template_data})
+
+
 # Create your views here.
