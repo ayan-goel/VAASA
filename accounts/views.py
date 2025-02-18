@@ -3,6 +3,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import (
@@ -42,10 +43,30 @@ def reset_password(request, username):
     template_data["title"] = "Reset Password"
     user = get_object_or_404(User, username=username)
     if request.method == "GET":
+        user = User.objects.filter(username=username).first()
+        if not user:
+            return redirect("accounts.request_reset")
+
+        reset_link = request.build_absolute_uri(
+            f"/accounts/reset_password/{user.username}/"
+        )
+        send_mail(
+            subject="Reset Your Password",
+            message=(
+                f"Hello, {user.username},\n\n"
+                "You requested a password reset. Please click the link below to reset your password:\n\n"
+                f"{reset_link}\n\n"
+                "If you did not request this, please ignore this email.\n\n"
+                "Do not reply to this email!"
+            ),
+            from_email="vaasamoviesstore@gmail.com",
+            recipient_list=[user.email],
+            fail_silently=False,
+        )
         form = CustomSetPasswordForm(user)
         template_data["form"] = form
         return render(
-            request, "accounts/reset_password.html", {"template_data": template_data}
+            request, "accounts/request_reset.html", {"template_data": template_data}
         )
     elif request.method == "POST":
         form = CustomSetPasswordForm(user, request.POST)
@@ -55,7 +76,7 @@ def reset_password(request, username):
             return redirect("accounts.login")
         template_data["form"] = form
         return render(
-            request, "accounts/reset_password.html", {"template_data": template_data}
+            request, "accounts/request_reset.html", {"template_data": template_data}
         )
 
 
