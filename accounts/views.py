@@ -29,7 +29,23 @@ def request_reset(request):
             username = form.cleaned_data["username"]
             user = User.objects.filter(username=username).first()
             if user:
-                return redirect("accounts.reset_password", username=username)
+                reset_link = request.build_absolute_uri(
+                    f"/accounts/reset_password/{user.username}/"
+                )
+                send_mail(
+                    subject="Reset Your Password",
+                    message=(
+                        f"Hello, {user.username},\n\n"
+                        "You requested a password reset. Please click the link below to reset your password:\n\n"
+                        f"{reset_link}\n\n"
+                        "If you did not request this, please ignore this email.\n\n"
+                        "Do not reply to this email!"
+                    ),
+                    from_email="vaasamoviesstore@gmail.com",
+                    recipient_list=[user.email],
+                    fail_silently=False,
+                )
+                return render(request, "accounts/email_sent.html", {"username": username})
             else:
                 template_data["error"] = "Username not found."
         template_data["form"] = form
@@ -66,7 +82,7 @@ def reset_password(request, username):
         form = CustomSetPasswordForm(user)
         template_data["form"] = form
         return render(
-            request, "accounts/request_reset.html", {"template_data": template_data}
+            request, "accounts/reset_password.html", {"template_data": template_data}
         )
     elif request.method == "POST":
         form = CustomSetPasswordForm(user, request.POST)
@@ -76,7 +92,7 @@ def reset_password(request, username):
             return redirect("accounts.login")
         template_data["form"] = form
         return render(
-            request, "accounts/request_reset.html", {"template_data": template_data}
+            request, "accounts/reset_password.html", {"template_data": template_data}
         )
 
 

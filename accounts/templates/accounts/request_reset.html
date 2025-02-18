@@ -20,6 +20,11 @@
                                 {{ template_data.error }}
                             </div>
                         {% endif %}
+                        {% if template_data.success_message %}
+                            <div class="alert alert-success mt-3">
+                                {{ template_data.success_message }}
+                            </div>
+                        {% endif %}
                     </form>
                 </div>
             </div>
